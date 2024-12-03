@@ -78,7 +78,14 @@ void postorder(BST T, int* a)
 //-----------------------------------------------------------------------------
 void bfs(BST T, int* a, int max)
 {
-	// TODO
+    if (max < 0) { return; }
+    if (T == NULL) {
+        *a = X;
+        return;
+    }
+	bfs(T->LC, a + 1, max - 1);
+	bfs(T->RC, a + 1, max - 1);
+    *a = T->val;
 }
 //-----------------------------------------------------------------------------
 // is_member: checks if value val is member of BST T
