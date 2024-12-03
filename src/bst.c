@@ -108,8 +108,13 @@ int height(BST T)
 //-----------------------------------------------------------------------------
 int size(BST T)
 {
-	// TODO
-	return 0;
+	if(!T)
+	   return 0;
+
+	int left = size(get_LC(T));
+	int right = size(get_RC(T));
+
+	return left + right + 1;
 }
 //-----------------------------------------------------------------------------
 // private helper functions, not exported
