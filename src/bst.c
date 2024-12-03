@@ -93,16 +93,19 @@ bool is_member(BST T, int val)
 //-----------------------------------------------------------------------------
 int height(BST T)
 {
-	// TODO
-	return 0;
+    if(!T){return 0;}
+
+    int left = height(get_LC(T));
+    int right = height(get_RC(T));
+
+	return (left > right ? left : right) + 1;
 }
 //-----------------------------------------------------------------------------
 // size: returns size of BST T
 //-----------------------------------------------------------------------------
 int size(BST T)
 {
-	if(!T)
-	   return 0;
+	if(!T){return 0;}
 
 	int left = size(get_LC(T));
 	int right = size(get_RC(T));
