@@ -1,28 +1,45 @@
-CFLAGS = -Wall
-# Remove this -lm flag on Mac
-LDLIBS = -lm
+.PHONY: clean tidy
 
-tree:		global.o bt.o bst.o avl.o main.o ui.o
-			gcc $(CLFAGS) -o tree bt.o bst.o avl.o ui.o global.o main.o $(LDLIBS)
+# Compiler and flags
+CC=gcc
+CFLAGS=-Wall -Werror -std=gnu99 -g
+LFLAGS=-lm
 
-global.o:	global.h global.c
-			gcc $(CFLAGS) -c global.c
+# Directories
+BUILD_DIR=./build/
+SRC_DIR=./src/
 
-main.o:		main.c ui.h global.h
-			gcc $(CFLAGS) -c main.c
+# Source and header files
+HDR=$(wildcard $(SRC_DIR)*.h)
+SRC=$(filter-out $(SRC_DIR)*_test.c, $(wildcard $(SRC_DIR)*.c))
+OBJ=$(patsubst $(SRC_DIR)%.c,$(BUILD_DIR)%.o,$(SRC))
 
-ui.o:		ui.c ui.h global.h
-			gcc $(CFLAGS) -c ui.c
+# Test flags and files
+CFLAGS_TEST=$(CFLAGS)
+LFLAGS_TEST=$(LFLAGS) -lcheck -lm -lpthread -lrt -lsubunit
+SRC_TEST=$(wildcard $(SRC_DIR)*_test.c)
+OBJ_TEST=$(patsubst $(SRC_DIR)%.c,$(BUILD_DIR)%.o,$(SRC_TEST))
 
-bt.o:		bt.h bt.c
-			gcc $(CFLAGS) -c bt.c
+# Default target
+all: main
 
-bst.o:		bt.h bst.h global.h bst.c
-			gcc $(CFLAGS) -c bst.c
+# Main executable
+main: $(OBJ)
+	$(CC) $(CFLAGS) -o $(BUILD_DIR)tree $(OBJ) $(LFLAGS)
 
-avl.o:		bt.h bst.h avl.h global.h avl.c
-			gcc $(CFLAGS) -c avl.c
+# Test executable
+test: $(OBJ_TEST)
+	$(CC) $(CFLAGS_TEST) -o $(BUILD_DIR)test $(OBJ_TEST) $(LFLAGS_TEST)
 
+# Rule for building object files
+$(BUILD_DIR)%.o: $(SRC_DIR)%.c $(HDR)
+	mkdir -p $(BUILD_DIR)
+	$(CC) -c $(CFLAGS) -o $@ $<
+
+# Clean up all generated files
 clean:
-			rm -f *.o
-			rm -f tree
+	rm -rf $(BUILD_DIR)
+
+# Tidy intermediate files
+tidy:
+	rm -rf $(BUILD_DIR)*.o

@@ -1,8 +1,8 @@
 //=============================================================================
 // bst.c - binary search tree, based on binary tree (bt.h/bt.c)
 //=============================================================================
-#include "global.h"
-#include "bst.h"
+#include "../include/global.h"
+#include "../include/bst.h"
 
 //-----------------------------------------------------------------------------
 // local function prototypes

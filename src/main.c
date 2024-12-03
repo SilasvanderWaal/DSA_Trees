@@ -1,5 +1,5 @@
 // main.c
-#include "ui.h"
+#include "../include/ui.h"
 #include <unistd.h>
 void usage(char* s)
 {

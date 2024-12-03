@@ -1,6 +1,6 @@
 //ui.c
-#include "ui.h"
-#include "global.h"
+#include "../include/ui.h"
+#include "../include/global.h"
 static bool echo = false;
 //-----------------------------------------------------------------------------
 // prints the BST T

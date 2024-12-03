@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "bt.h"
+#include "../include/bt.h"
 BT* new_BT(int val)
 {
 	BT* nu = (BT*)malloc(sizeof(BT));
