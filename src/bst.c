@@ -9,6 +9,7 @@
 //-----------------------------------------------------------------------------
 static void _preorder(BST T, int* pos, int* a);
 static void _inorder(BST T, int* pos, int* a);
+static BST _find_successor(BST T);
 //-----------------------------------------------------------------------------
 // public functions, exported through bst.h
 //-----------------------------------------------------------------------------
@@ -32,7 +33,35 @@ BST bst_add(BST T, int v)
 //-----------------------------------------------------------------------------
 BST bst_rem(BST T, int val)
 {
-	// TODO
+    //Base case, NULL
+    if(!T){return T;}
+
+    //Searching for the key in the tree
+    if(val < get_val(T))
+        set_LC(T, bst_rem(get_LC(T), val));
+    else if(val > get_val(T))
+        set_RC(T, bst_rem(get_RC(T), val));
+    else{
+        //Key is found
+        //No child or right child
+        if(!get_LC(T)){
+            BT* temp = get_RC(T);
+            free(T);
+            return temp;
+        }
+
+        //Left child
+        if(!get_RC(T)){
+            BT* temp = get_LC(T);
+            free(T);
+            return temp;
+        }
+
+        //Two children
+        BST successor = _find_successor(T);
+        set_val(T, get_val(successor));
+        set_RC(T, bst_rem(get_RC(T), get_val(successor)));
+    }
 	return T;
 }
 //-----------------------------------------------------------------------------
@@ -136,7 +165,22 @@ static void _preorder(BST T, int* pos, int* a)
 
 static void _inorder(BST T, int* pos, int* a){
     if(!T){return;}
-	_preorder(get_LC(T), pos, a);
+	_inorder(get_LC(T), pos, a);
 	a[(*pos)++] = get_val(T);
-	_preorder(get_RC(T), pos, a);
+	_inorder(get_RC(T), pos, a);
+}
+
+//Next node in the inorder travers
+static BST _find_successor(BST T){
+    //Entering right child, please don't SWAT me
+    if(!get_RC(T))
+        return NULL;
+    else
+        T = get_RC(T);
+
+    //Finding left most child
+    while(get_LC(T))
+        T = get_LC(T);
+
+    return T;
 }
