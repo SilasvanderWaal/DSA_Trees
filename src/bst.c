@@ -9,6 +9,7 @@
 //-----------------------------------------------------------------------------
 static void _preorder(BST T, int* pos, int* a);
 static void _inorder(BST T, int* pos, int* a);
+static void _bfs(BST T, int *a, int pos, int max);
 //-----------------------------------------------------------------------------
 // public functions, exported through bst.h
 //-----------------------------------------------------------------------------
@@ -74,13 +75,15 @@ void postorder(BST T, int* a)
 // bfs: puts the BST T values into array a in bfs-order, non-nodes
 // are indicated by X, as defined in global.h
 //-----------------------------------------------------------------------------
-//   2                    2
-//  / \	--> [2,1,3]      / \  --> [2,X,3]
-// 1  3                 *  3
+//       5                    2
+//      / \	--> [2,1,3]      / \  --> [2,X,3]
+//     4   *
+//   3   * x  x              *  3
 //-----------------------------------------------------------------------------
 void bfs(BST T, int* a, int max)
 {
-	// TODO
+    _bfs(T, a, 0, max);
+    return;
 }
 //-----------------------------------------------------------------------------
 // is_member: checks if value val is member of BST T
@@ -139,4 +142,17 @@ static void _inorder(BST T, int* pos, int* a){
 	_preorder(get_LC(T), pos, a);
 	a[(*pos)++] = get_val(T);
 	_preorder(get_RC(T), pos, a);
+}
+
+static void _bfs(BST T, int* a, int pos, int max){
+    if (T) {
+        a[pos] = get_val(T);
+    } else {
+        a[pos] = X;
+    }
+
+    if (pos * 2 > max) { return; }
+
+    _bfs(get_LC(T), a, pos * 2 + 1, max);
+    _bfs(get_RC(T), a, pos * 2 + 2, max);
 }
