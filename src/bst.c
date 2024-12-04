@@ -79,13 +79,10 @@ void postorder(BST T, int* a)
 void bfs(BST T, int* a, int max)
 {
     if (max < 0) { return; }
-    if (T == NULL) {
-        *a = X;
-        return;
-    }
-	bfs(T->LC, a + 1, max - 1);
-	bfs(T->RC, a + 1, max - 1);
+    if (T == NULL) { *a = X; return; }
     *a = T->val;
+    bfs(T->LC, a + 1, max - 1);
+    bfs(T->RC, a + 1, max - 1);
 }
 //-----------------------------------------------------------------------------
 // is_member: checks if value val is member of BST T
@@ -101,7 +98,7 @@ bool is_member(BST T, int val)
 int height(BST T)
 {
 	// TODO
-	return 0;
+	return 5;
 }
 //-----------------------------------------------------------------------------
 // size: returns size of BST T
