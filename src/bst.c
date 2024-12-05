@@ -219,8 +219,8 @@ static void _bfs(BST T, int* a, int pos, int max){
         a[pos] = X;
     }
 
-    //if (pos * 2 + 1 >= max || pos * 2 + 2 >= max) { return; }
-    if (pos * 2 >= max) { return; }
+    //Making sure the posistion does not get out of bounds, nor misses a node.
+    if (pos * 2 + 2 >= max) { return; }
     _bfs(get_LC(T), a, pos * 2 + 1, max);
     _bfs(get_RC(T), a, pos * 2 + 2, max);
 }
