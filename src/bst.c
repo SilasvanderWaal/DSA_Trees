@@ -12,6 +12,7 @@ static void _inorder(BST T, int* pos, int* a);
 static void _bfs(BST T, int *a, int pos, int max);
 static BST _find_successor(BST T);
 static BST _find_predeccessor(BST T);
+static void _postorder(BST T, int* pos, int*a);
 //-----------------------------------------------------------------------------
 // public functions, exported through bst.h
 //-----------------------------------------------------------------------------
@@ -108,7 +109,8 @@ void inorder(BST T, int* a)
 //-----------------------------------------------------------------------------
 void postorder(BST T, int* a)
 {
-	// TODO
+    int pos = 0;
+    _postorder(T, &pos, a);
 }
 //-----------------------------------------------------------------------------
 // bfs: puts the BST T values into array a in bfs-order, non-nodes
@@ -181,6 +183,13 @@ static void _inorder(BST T, int* pos, int* a){
 	_inorder(get_LC(T), pos, a);
 	a[(*pos)++] = get_val(T);
 	_inorder(get_RC(T), pos, a);
+}
+
+static void _postorder(BST T, int* pos, int*a){
+    if(!T){return;}
+    _postorder(get_LC(T), pos, a);
+    _postorder(get_RC(T), pos, a);
+   	a[(*pos)++] = get_val(T);
 }
 
 //Next node in the inorder travers
