@@ -37,13 +37,14 @@ AVL avl_rem(AVL T, int val)
 //-----------------------------------------------------------------------------
 AVL balance(AVL T)
 {
-    if(balance_factor(T) >= 2){    //Left is heavier
+    int balance_factor_root = balance_factor(T);
+    if(balance_factor_root >= 2){    //Left is heavier
         if (balance_factor(get_LC(T)) <= -1)
             return drr(T);  //Inner heavy
         else
             return srr(T);  //Outer heavy
-    }else if(balance_factor(T) <= -2){     //Right is heavier
-        if (balance_factor(get_LC(T)) >= 1)
+    }else if(balance_factor_root <= -2){     //Right is heavier
+        if (balance_factor(get_RC(T)) >= 1)
             return dlr(T);  //Inner heavy
         else
             return slr(T);  //Outer heavy
