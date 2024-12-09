@@ -53,12 +53,12 @@ static AVL srr(AVL T)
 }
 static AVL slr(AVL T)
 {
-    AVL temp = T;
-    T = get_RC(T);
-    AVL temp_2 = get_LC(T);
-    set_RC(temp, temp_2);
-    set_LC(T, temp);
-	return T;
+   	if(DEBUG)printf("slr\n");
+    AVL old_root = T;
+    AVL new_root = get_RC(T);
+    set_RC(old_root, get_LC(new_root));
+    set_LC(new_root, old_root);
+	return new_root;
 }
 
 //Left-right rotation
