@@ -8,6 +8,7 @@
 // local function prototypes
 //-----------------------------------------------------------------------------
 static void _preorder(BST T, int* pos, int* a);
+static void _inorder(BST T, int* pos, int* a);
 //-----------------------------------------------------------------------------
 // public functions, exported through bst.h
 //-----------------------------------------------------------------------------
@@ -55,7 +56,8 @@ void preorder(BST T, int* a)
 //-----------------------------------------------------------------------------
 void inorder(BST T, int* a)
 {
-	// TODO
+    int pos = 0;
+    _inorder(T, &pos, a);
 }
 //-----------------------------------------------------------------------------
 // postorder: puts the BST T values into array a in postorder
@@ -89,24 +91,34 @@ void bfs(BST T, int* a, int max)
 //-----------------------------------------------------------------------------
 bool is_member(BST T, int val)
 {
-	// TODO
-	return 	false;
+    if(!T){return false;}
+
+    if(get_val(T) == val)
+        return true;
+
+    if(val < get_val(T))
+        return is_member(get_LC(T), val);
+
+    return is_member(get_RC(T), val);
 }
 //-----------------------------------------------------------------------------
 // height: returns height of BST T
 //-----------------------------------------------------------------------------
 int height(BST T)
 {
-	// TODO
-	return 5;
+    if(!T){return 0;}
+
+    int left = height(get_LC(T));
+    int right = height(get_RC(T));
+
+	return (left > right ? left : right) + 1;
 }
 //-----------------------------------------------------------------------------
 // size: returns size of BST T
 //-----------------------------------------------------------------------------
 int size(BST T)
 {
-	if(!T)
-	   return 0;
+	if(!T){return 0;}
 
 	int left = size(get_LC(T));
 	int right = size(get_RC(T));
@@ -124,4 +136,11 @@ static void _preorder(BST T, int* pos, int* a)
 		_preorder(get_LC(T), pos, a);
 		_preorder(get_RC(T), pos, a);
 	}
+}
+
+static void _inorder(BST T, int* pos, int* a){
+    if(!T){return;}
+	_preorder(get_LC(T), pos, a);
+	a[(*pos)++] = get_val(T);
+	_preorder(get_RC(T), pos, a);
 }

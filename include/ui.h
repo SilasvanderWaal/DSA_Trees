@@ -1,5 +1,6 @@
 // ui.h
 #include <stdio.h>
+#include <string.h>
 #include "bt.h"
 #include "bst.h"
 #include "avl.h"

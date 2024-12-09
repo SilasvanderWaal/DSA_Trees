@@ -1,7 +1,11 @@
 //ui.c
 #include "../include/ui.h"
 #include "../include/global.h"
+#include <math.h>
+#include <stdio.h>
 static bool echo = false;
+
+static void ui_line(char * string, char c, int n);
 //-----------------------------------------------------------------------------
 // prints the BST T
 //-----------------------------------------------------------------------------
@@ -43,7 +47,12 @@ void print_array(int* a, int size)
 void print_2d(int* a, int maxnodes)
 {
 	printf("\nTree 2d\n");
-	// TODO
+	for (int i = 0; i < maxnodes; i++) {
+	   char buff[5];
+	   sprintf(buff, "%d",a[i]);
+       ui_line(buff, ' ', 60/pow(2, i));
+       printf("\n");
+	}
 	printf("\n");
 }
 //-----------------------------------------------------------------------------
@@ -148,4 +157,21 @@ void run(char m, bool e)
 			default	: printf("Unknown command (%c)\n",val);	break;
 		}
 	} while(val != 'q');
+}
+
+
+static void ui_line(char * string, char c, int n)
+{
+    if (strlen(string) > n) { return; }
+
+    int new_width = n - strlen(string);
+    int side = new_width >> 1;
+    for (int i = 0; i <= n; i++) {
+        if (i >= side && i <=side+strlen(string)) {
+            printf("%s", string);
+            i+=strlen(string);
+        } else {
+            printf("%c", c);
+        }
+    }
 }
