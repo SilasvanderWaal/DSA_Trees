@@ -9,6 +9,10 @@
 //-----------------------------------------------------------------------------
 static void _preorder(BST T, int* pos, int* a);
 static void _inorder(BST T, int* pos, int* a);
+static void _bfs(BST T, int *a, int pos, int max);
+static BST _find_successor(BST T);
+static BST _find_predeccessor(BST T);
+static void _postorder(BST T, int* pos, int*a);
 //-----------------------------------------------------------------------------
 // public functions, exported through bst.h
 //-----------------------------------------------------------------------------
@@ -32,7 +36,44 @@ BST bst_add(BST T, int v)
 //-----------------------------------------------------------------------------
 BST bst_rem(BST T, int val)
 {
-	// TODO
+    //Base case, NULL
+    if(!T){return T;}
+
+    //Searching for the key in the tree
+    if(val < get_val(T))
+        set_LC(T, bst_rem(get_LC(T), val));
+    else if(val > get_val(T))
+        set_RC(T, bst_rem(get_RC(T), val));
+    else{
+        //Key is found
+        //No child or right child
+        if(!get_LC(T)){
+            BST temp = get_RC(T);
+            free(T);
+            return temp;
+        }
+
+        //Left child
+        if(!get_RC(T)){
+            BST temp = get_LC(T);
+            free(T);
+            return temp;
+        }
+
+        //Two children
+        BST replacement_node;
+        int left_height = height(get_LC(T));
+        int right_height = height(get_RC(T));
+        replacement_node = left_height >= right_height ? _find_predeccessor(T) : _find_successor(T);
+
+        set_val(T, get_val(replacement_node));
+
+        if(left_height >= right_height)
+            set_LC(T, bst_rem(get_LC(T), get_val(replacement_node)));
+        else
+            set_RC(T, bst_rem(get_RC(T), get_val(replacement_node)));
+
+    }
 	return T;
 }
 //-----------------------------------------------------------------------------
@@ -68,23 +109,22 @@ void inorder(BST T, int* a)
 //-----------------------------------------------------------------------------
 void postorder(BST T, int* a)
 {
-	// TODO
+    int pos = 0;
+    _postorder(T, &pos, a);
 }
 //-----------------------------------------------------------------------------
 // bfs: puts the BST T values into array a in bfs-order, non-nodes
 // are indicated by X, as defined in global.h
 //-----------------------------------------------------------------------------
-//   2                    2
-//  / \	--> [2,1,3]      / \  --> [2,X,3]
-// 1  3                 *  3
+//       5                    2
+//      / \	--> [2,1,3]      / \  --> [2,X,3]
+//     4   *
+//   3   * x  x              *  3
 //-----------------------------------------------------------------------------
 void bfs(BST T, int* a, int max)
 {
-    if (max < 0) { return; }
-    if (T == NULL) { *a = X; return; }
-    *a = T->val;
-    bfs(T->LC, a + 1, max - 1);
-    bfs(T->RC, a + 1, max - 1);
+    _bfs(T, a, 0, max);
+    return;
 }
 //-----------------------------------------------------------------------------
 // is_member: checks if value val is member of BST T
@@ -140,7 +180,56 @@ static void _preorder(BST T, int* pos, int* a)
 
 static void _inorder(BST T, int* pos, int* a){
     if(!T){return;}
-	_preorder(get_LC(T), pos, a);
+	_inorder(get_LC(T), pos, a);
 	a[(*pos)++] = get_val(T);
-	_preorder(get_RC(T), pos, a);
+	_inorder(get_RC(T), pos, a);
+}
+
+static void _postorder(BST T, int* pos, int*a){
+    if(!T){return;}
+    _postorder(get_LC(T), pos, a);
+    _postorder(get_RC(T), pos, a);
+   	a[(*pos)++] = get_val(T);
+}
+
+//Next node in the inorder travers
+static BST _find_successor(BST T){
+    //Entering right child, please don't SWAT me
+    if(!get_RC(T))
+        return NULL;
+    else
+        T = get_RC(T);
+
+    //Finding left most child
+    while(get_LC(T))
+        T = get_LC(T);
+
+    return T;
+}
+
+static BST _find_predeccessor(BST T){
+    //Entering right child, please don't SWAT me
+    if(!get_LC(T))
+        return NULL;
+    else
+        T = get_LC(T);
+
+    //Finding left most child
+    while(get_RC(T))
+        T = get_RC(T);
+
+    return T;
+}
+
+static void _bfs(BST T, int* a, int pos, int max){
+    if (T) {
+        a[pos] = get_val(T);
+    } else {
+        a[pos] = X;
+    }
+
+    //Making sure the posistion does not get out of bounds, nor misses a node.
+    if (pos * 2 + 2 >= max) { return; }
+    _bfs(get_LC(T), a, pos * 2 + 1, max);
+    _bfs(get_RC(T), a, pos * 2 + 2, max);
 }

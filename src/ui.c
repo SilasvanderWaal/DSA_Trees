@@ -44,16 +44,34 @@ void print_array(int* a, int size)
 // prints a tree, represented by the BFS order star array a of size maxnodes
 // in a 2-dimensional way
 //-----------------------------------------------------------------------------
-void print_2d(int* a, int maxnodes)
-{
-	printf("\nTree 2d\n");
-	for (int i = 0; i < maxnodes; i++) {
-	   char buff[5];
-	   sprintf(buff, "%d",a[i]);
-       ui_line(buff, ' ', 60/pow(2, i));
-       printf("\n");
-	}
-	printf("\n");
+void print_2d(int* a, int maxnodes) // Works good up to 5 height
+{   // 0, 2, 6, 14
+    // 1, 3, 7, 15
+    printf("\nTree 2d\n");
+
+
+    int new_row = 0;
+    int per_row = 1; // How many numbers per row
+    for(int i = 0; i < maxnodes; i++) {
+
+        // Prepare output buffer
+        char buff[5];
+        if (a[i] == X) {
+            sprintf(buff, "*");
+        } else {
+            sprintf(buff, "%d",a[i]);
+        }
+        // Print out one number
+        ui_line(buff, ' ', TREE_WIDTH/per_row);
+
+        // for each new line
+        if (i == new_row) {
+            per_row *= 2; // Each previous number spits too two more numbers
+            new_row = new_row * 2 + 2;
+            printf("\n");
+        }
+    }
+    printf("\n");
 }
 //-----------------------------------------------------------------------------
 // prints the menu

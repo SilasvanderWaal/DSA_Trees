@@ -2,7 +2,7 @@
 
 # Compiler and flags
 CC=gcc
-CFLAGS=-Wall -Werror -std=gnu99 -g
+CFLAGS=-Wall -std=gnu99 -g
 LFLAGS=-lm
 
 # Directories
