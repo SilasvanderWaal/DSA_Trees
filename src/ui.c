@@ -49,7 +49,10 @@ void print_2d(int* a, int maxnodes) // Works good up to 5 height
     // 1, 3, 7, 15
     printf("\nTree 2d\n");
 
+    // 1, 3, 7, 15
+    printf("\nTree 2d\n");
 
+    int tree_width = (maxnodes * 5  +1);
     int new_row = 0;
     int per_row = 1; // How many numbers per row
     for(int i = 0; i < maxnodes; i++) {
@@ -62,7 +65,7 @@ void print_2d(int* a, int maxnodes) // Works good up to 5 height
             sprintf(buff, "%d",a[i]);
         }
         // Print out one number
-        ui_line(buff, ' ', TREE_WIDTH/per_row);
+        ui_line(buff, ' ', (tree_width/per_row) + 1);
 
         // for each new line
         if (i == new_row) {
@@ -182,8 +185,8 @@ static void ui_line(char * string, char c, int n)
 {
     if (strlen(string) > n) { return; }
 
-    int new_width = n - strlen(string);
-    int side = new_width >> 1;
+    double new_width = n - strlen(string);
+    double side = round(new_width/2);
     for (int i = 0; i <= n; i++) {
         if (i >= side && i <=side+strlen(string)) {
             printf("%s", string);
