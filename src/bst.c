@@ -13,6 +13,7 @@ static void _bfs(BST T, int *a, int pos, int max);
 static BST _find_successor(BST T);
 static BST _find_predeccessor(BST T);
 static void _postorder(BST T, int* pos, int*a);
+static BST delete_node(BST T, int val);
 //-----------------------------------------------------------------------------
 // public functions, exported through bst.h
 //-----------------------------------------------------------------------------
@@ -46,33 +47,7 @@ BST bst_rem(BST T, int val)
         set_RC(T, bst_rem(get_RC(T), val));
     else{
         //Key is found
-        //No child or right child
-        if(!get_LC(T)){
-            BST temp = get_RC(T);
-            free(T);
-            return temp;
-        }
-
-        //Left child
-        if(!get_RC(T)){
-            BST temp = get_LC(T);
-            free(T);
-            return temp;
-        }
-
-        //Two children
-        BST replacement_node;
-        int left_height = height(get_LC(T));
-        int right_height = height(get_RC(T));
-        replacement_node = left_height >= right_height ? _find_predeccessor(T) : _find_successor(T);
-
-        set_val(T, get_val(replacement_node));
-
-        if(left_height >= right_height)
-            set_LC(T, bst_rem(get_LC(T), get_val(replacement_node)));
-        else
-            set_RC(T, bst_rem(get_RC(T), get_val(replacement_node)));
-
+        T = delete_node(T, val);
     }
 	return T;
 }
@@ -217,6 +192,37 @@ static BST _find_predeccessor(BST T){
     //Finding left most child
     while(get_RC(T))
         T = get_RC(T);
+
+    return T;
+}
+
+static BST delete_node(BST T, int val){
+    //No child or right child
+    if(!get_LC(T)){
+        BST temp = get_RC(T);
+        free(T);
+        return temp;
+    }
+
+    //Left child
+    if(!get_RC(T)){
+        BST temp = get_LC(T);
+        free(T);
+        return temp;
+    }
+
+    //Two children
+    BST replacement_node;
+    int left_height = height(get_LC(T));
+    int right_height = height(get_RC(T));
+    replacement_node = left_height >= right_height ? _find_predeccessor(T) : _find_successor(T);
+
+    set_val(T, get_val(replacement_node));
+
+    if(left_height >= right_height)
+        set_LC(T, bst_rem(get_LC(T), get_val(replacement_node)));
+    else
+        set_RC(T, bst_rem(get_RC(T), get_val(replacement_node)));
 
     return T;
 }
