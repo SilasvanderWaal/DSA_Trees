@@ -50,8 +50,11 @@ static AVL srr(AVL T)
 }
 static AVL slr(AVL T)
 {
-	if(DEBUG)printf("slr\n");
-	// TODO
+    AVL temp = T;
+    T = get_RC(T);
+    AVL temp_2 = get_LC(T);
+    set_RC(temp, temp_2);
+    set_LC(T, temp);
 	return T;
 }
 static AVL drr(AVL T)
