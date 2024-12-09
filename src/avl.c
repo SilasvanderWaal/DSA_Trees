@@ -10,6 +10,7 @@ static AVL srr(AVL T);
 static AVL slr(AVL T);
 static AVL drr(AVL T);
 static AVL dlr(AVL T);
+static int balance_factor(AVL T);
 //=============================================================================
 // Public functions, exported via .h-file
 //-----------------------------------------------------------------------------
@@ -36,16 +37,30 @@ AVL avl_rem(AVL T, int val)
 //-----------------------------------------------------------------------------
 AVL balance(AVL T)
 {
-	// TODO
-	return srr(slr(drr(dlr(T))));
+    if(balance_factor(T) >= 2){    //Left is heavier
+        if (balance_factor(get_LC(T)) <= -1)
+            return drr(T);  //Inner heavy
+        else
+            return srr(T);  //Outer heavy
+    }else if(balance_factor(T) <= -2){     //Right is heavier
+        if (balance_factor(get_LC(T)) >= 1)
+            return dlr(T);  //Inner heavy
+        else
+            return slr(T);  //Outer heavy
+    }
+    return T;
 }
 //=============================================================================
 // Private functions, for local use only
 //-----------------------------------------------------------------------------
+//Function that calculate the balance factor of a node.
+//Negative return means right subtree is heavier, otherwise left. Zero is perfectly balanced
+static int balance_factor(AVL T){
+    return get_val(get_LC(T)) - get_val(get_RC(T));
+}
 //Right Rotate, return the root of the rotated tree
 static AVL srr(AVL T)
 {
-	if(DEBUG)printf("srr\n");
 	AVL new_root = get_LC(T);  //Left child becomes new root
 	set_LC(T, get_RC(new_root));   //Preparing the old root with a new left child
 	set_RC(new_root, T);   //Old root becomes right child
@@ -66,8 +81,7 @@ static AVL drr(AVL T)
 {
 	if(DEBUG)printf("drr\n");
 	T = slr(T);
-	T = srr(T);
-	return T;
+	return srr(T);
 }
 
 //Right-left rotation
@@ -75,6 +89,5 @@ static AVL dlr(AVL T)
 {
 	if(DEBUG)printf("drr\n");
 	T = srr(T);
-	T = slr(T);
-	return T;
+	return slr(T);
 }
