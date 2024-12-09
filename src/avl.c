@@ -57,15 +57,21 @@ static AVL slr(AVL T)
 	// TODO
 	return T;
 }
+
+//Left-right rotation
 static AVL drr(AVL T)
 {
 	if(DEBUG)printf("drr\n");
-	// TODO
+	T = slr(T);
+	T = srr(T);
 	return T;
 }
+
+//Right-left rotation
 static AVL dlr(AVL T)
 {
 	if(DEBUG)printf("drr\n");
-	// TODO
+	T = srr(T);
+	T = slr(T);
 	return T;
 }
