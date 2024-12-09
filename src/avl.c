@@ -42,11 +42,14 @@ AVL balance(AVL T)
 //=============================================================================
 // Private functions, for local use only
 //-----------------------------------------------------------------------------
+//Right Rotate, return the root of the rotated tree
 static AVL srr(AVL T)
 {
 	if(DEBUG)printf("srr\n");
-	// TODO
-	return T;
+	AVL new_root = get_LC(T);  //Left child becomes new root
+	set_LC(T, get_RC(new_root));   //Preparing the old root with a new left child
+	set_RC(new_root, T);   //Old root becomes right child
+	return new_root;          //Return the new root
 }
 static AVL slr(AVL T)
 {
