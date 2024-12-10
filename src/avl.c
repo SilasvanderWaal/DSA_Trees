@@ -3,7 +3,7 @@
 //=============================================================================
 #include "../include/avl.h"
 #include "../include/global.h"
-#define DEBUG 0
+#define DEBUG 1
 //=============================================================================
 // local prototypes
 //-----------------------------------------------------------------------------
@@ -63,13 +63,16 @@ static int balance_factor(AVL T){
 //Right Rotate, return the root of the rotated tree
 static AVL srr(AVL T)
 {
+   	if(DEBUG)printf("srr\n");
 	AVL new_root = get_LC(T);  //Left child becomes new root
 	set_LC(T, get_RC(new_root));   //Preparing the old root with a new left child
 	set_RC(new_root, T);   //Old root becomes right child
 	return new_root;          //Return the new root
+
 }
 static AVL slr(AVL T)
 {
+   	if(DEBUG)printf("slr\n");
     AVL temp = T;
     T = get_RC(T);
     AVL temp_2 = get_LC(T);
@@ -82,7 +85,7 @@ static AVL slr(AVL T)
 static AVL drr(AVL T)
 {
 	if(DEBUG)printf("drr\n");
-	T = slr(T);
+	T = slr(get_LC(T));
 	return srr(T);
 }
 
