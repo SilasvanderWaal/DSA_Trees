@@ -2,6 +2,7 @@
 // avl.c - AVL-tree based on binary search tree (bst.h/bst.c)
 //=============================================================================
 #include "../include/avl.h"
+#include "../include/global.h"
 #define DEBUG 0
 //=============================================================================
 // local prototypes
@@ -20,8 +21,8 @@ static int balance_factor(AVL T);
 AVL avl_add(AVL T, int val)
 {
 	if(DEBUG)printf("avl_add (%d)\n",val);
-	// TODO
-	return T;
+	T = bst_add(T, val);
+	return balance(T);
 }
 //-----------------------------------------------------------------------------
 // avl_rem: removes the value val from AVL T in a balanced fashion
@@ -29,8 +30,8 @@ AVL avl_add(AVL T, int val)
 AVL avl_rem(AVL T, int val)
 {
 	if(DEBUG)printf("avl_rem (%d)\n",val);
-	// TODO
-	return T;
+	T = bst_rem(T, val);
+	return balance(T);
 }
 //-----------------------------------------------------------------------------
 // balance: balances the AVL tree T if needed
@@ -57,7 +58,7 @@ AVL balance(AVL T)
 //Function that calculate the balance factor of a node.
 //Negative return means right subtree is heavier, otherwise left. Zero is perfectly balanced
 static int balance_factor(AVL T){
-    return get_val(get_LC(T)) - get_val(get_RC(T));
+    return height(get_LC(T)) - height(get_RC(T));
 }
 //Right Rotate, return the root of the rotated tree
 static AVL srr(AVL T)
