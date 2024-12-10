@@ -84,7 +84,7 @@ static AVL slr(AVL T)
 static AVL drr(AVL T)
 {
 	if(DEBUG)printf("drr\n");
-	T = slr(get_LC(T));
+	set_LC(T, slr(get_LC(T)));
 	return srr(T);
 }
 
@@ -92,6 +92,6 @@ static AVL drr(AVL T)
 static AVL dlr(AVL T)
 {
 	if(DEBUG)printf("drr\n");
-	T = srr(T);
+	set_RC(T, srr(get_RC(T)));
 	return slr(T);
 }
