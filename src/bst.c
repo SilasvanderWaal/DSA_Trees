@@ -42,9 +42,9 @@ BST bst_rem(BST T, int val)
 
     //Searching for the key in the tree
     if(val < get_val(T))
-        set_LC(T, bst_rem(get_LC(T), val));
+        set_LC(T, rem(get_LC(T), val));
     else if(val > get_val(T))
-        set_RC(T, bst_rem(get_RC(T), val));
+        set_RC(T, rem(get_RC(T), val));
     else{
         //Key is found
         T = delete_node(T, val);
@@ -220,9 +220,9 @@ static BST delete_node(BST T, int val){
     set_val(T, get_val(replacement_node));
 
     if(left_height >= right_height)
-        set_LC(T, bst_rem(get_LC(T), get_val(replacement_node)));
+        set_LC(T, rem(get_LC(T), get_val(replacement_node)));
     else
-        set_RC(T, bst_rem(get_RC(T), get_val(replacement_node)));
+        set_RC(T, rem(get_RC(T), get_val(replacement_node)));
 
     return T;
 }
